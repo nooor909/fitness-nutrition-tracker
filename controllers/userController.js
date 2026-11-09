@@ -1,4 +1,4 @@
-let userData = [
+/* let userData = [
     {
         id: 1,
         name: 'Ben',
@@ -30,11 +30,41 @@ let userData = [
 
 let nextID = 4;
 
+// Get /api/users
+// Return all users
 function getAllUsers(req, res) {
     res.json(userData);
 }
 
+// Get /api/users/:id
 function getUserById(req, res) {
     const userId = parseInt(req.params.id);
     const user = userData.find(u => u.id === userId);
+}
+*/
+
+
+
+const userModel = require('../models/userModel');
+const userViews = require('../views/userViews');
+
+
+// Calculate BMI using weight (kg) and height (cm)
+function calculateBMI(weight, height) {
+    const heightInMeters = height / 100;
+    return Number(
+        (weight / (heightInMeters * heightInMeters)).toFixed(1)
+    );
+}
+
+async function getAllUsers(req, res) {
+    await userService.getAllUsers()
+    
+    try {
+        const users = await userModel.getAllUsers();
+        res.json(users);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 }
